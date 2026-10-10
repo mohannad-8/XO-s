@@ -1,0 +1,197 @@
+:root{
+  --bg:#f7f7f7;
+  --surface:#ffffff;
+  --surface-2:#efefef;
+  --ink:#171717;
+  --muted:#666666;
+  --border:rgba(0,0,0,.10);
+  --danger:#F04A41;
+  --shadow:0 16px 40px -24px rgba(0,0,0,.25);
+  /* نقطة تبديل واحدة: عند توفر ملفات خط Thmanyah تُستبدل القيمة الأولى هنا فقط */
+  --font-primary:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d0d0d; --surface:#161616; --surface-2:#1e1e1e;
+    --ink:#f2f2f2; --muted:#999999;
+    --border:rgba(255,255,255,.10);
+    --shadow:0 16px 40px -20px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d0d0d; --surface:#161616; --surface-2:#1e1e1e;
+  --ink:#f2f2f2; --muted:#999999;
+  --border:rgba(255,255,255,.10);
+  --shadow:0 16px 40px -20px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{
+  margin:0;overflow:hidden;background:var(--bg);color:var(--ink);
+  font:15px/1.5 var(--font-primary);
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;
+}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;touch-action:manipulation}
+button:disabled{cursor:default}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+a{color:inherit}
+svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---- تخطيط: الخصم بالأعلى، اللوحة، اللاعب بالأسفل ---- */
+main{
+  height:100vh;height:100dvh;max-width:520px;margin:0 auto;
+  display:flex;flex-direction:column;gap:16px;
+  padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+}
+.side{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.flipped{transform:rotate(180deg)}
+
+/* ---- شاشات القائمة/الاعتمادات: تمرير عادي بدل flex-fit-screen ---- */
+.screen{
+  min-height:100vh;min-height:100dvh;max-width:520px;margin:0 auto;
+  display:flex;flex-direction:column;gap:18px;overflow-y:auto;
+  padding:calc(24px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+}
+.screen h1{font-size:28px;font-weight:400;margin:0}
+.screen h2{font-size:18px;font-weight:400;margin:0 0 4px;color:var(--muted)}
+.screen p{margin:0;line-height:1.8;color:var(--muted);font-size:14.5px}
+.menu-list{display:flex;flex-direction:column;gap:10px}
+.mode-card{
+  display:flex;flex-direction:column;gap:4px;align-items:flex-start;
+  width:100%;text-align:start;padding:16px 18px;border-radius:20px;
+  background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);
+}
+.mode-card strong{font-size:16.5px;font-weight:500}
+.mode-card span{font-size:13.5px;color:var(--muted);line-height:1.6}
+.credits-list{display:flex;flex-direction:column;gap:14px}
+.credit{
+  display:flex;flex-direction:column;gap:2px;padding:14px 18px;border-radius:18px;
+  background:var(--surface);border:1px solid var(--border);
+}
+.credit strong{font-size:16px;font-weight:500}
+.credit span{font-size:13px;color:var(--muted)}
+.back-link{align-self:flex-start;color:var(--muted);font-size:13.5px;text-decoration:underline}
+
+/* ---- أدوات الغش: مربعات أيقونات ---- */
+.tools{display:flex;gap:8px}
+.tool{
+  width:56px;height:56px;flex:none;display:grid;place-items:center;
+  background:var(--bg);color:var(--ink);border:1px solid var(--ink);border-radius:14px;
+}
+.tool svg{width:42px;height:42px;stroke-width:3.4}
+.tool text{fill:currentColor;stroke:none;font:17px/1 system-ui,sans-serif}
+.tool.selected{background:var(--ink);color:var(--bg)}
+.tool:disabled,.tool.used{opacity:.3}
+.tools.small{gap:5px}
+.tools.small .tool{width:36px;height:36px;border-radius:10px}
+.tools.small .tool svg{width:28px;height:28px}
+
+/* ---- عناصر تحكم الجولة ---- */
+.icons,.confirm{display:flex;gap:8px}
+.icon-btn{
+  width:40px;height:40px;flex:none;border-radius:999px;
+  background:var(--bg);border:1px solid var(--ink);
+  display:grid;place-items:center;
+}
+.icon-btn svg{width:17px;height:17px;stroke-width:2}
+.btn{
+  min-height:48px;border-radius:999px;padding:0 18px;font-size:14.5px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);border:1px solid var(--ink);
+}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.danger{background:var(--danger);color:#fff;border:0}
+.confirm .btn{min-height:40px}
+
+/* ---- الجهاز / الخصم ---- */
+.ai{width:100%;display:flex;align-items:center;justify-content:space-between}
+.ai.surprise{justify-content:center}
+.face svg{display:block;width:76px;height:66px;stroke-width:2}
+.face .eye{fill:currentColor;stroke:none}
+.reveal{margin:0;font-size:20.5px;line-height:1.2}
+.opponent-status{margin:0;font-size:14px;color:var(--muted);text-align:center}
+
+/* ---- اللوحة: خطان رأسيان وخطان أفقيان، مع مساحة بعد كل زاوية للغش ---- */
+#board{
+  --line:3px;
+  position:relative;flex:none;align-self:center;aspect-ratio:1;container-type:inline-size;
+  width:min(100%,450px,50vh);width:min(100%,450px,50dvh);
+  display:grid;grid-template:2fr repeat(3,3fr) 2fr/2fr repeat(3,3fr) 2fr;
+}
+#board::before{
+  content:'';grid-area:2/2/5/5;pointer-events:none;
+  background:
+    linear-gradient(var(--ink),var(--ink)) calc(100%/3) 0/var(--line) 100% no-repeat,
+    linear-gradient(var(--ink),var(--ink)) calc(200%/3) 0/var(--line) 100% no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 0 calc(100%/3)/100% var(--line) no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 0 calc(200%/3)/100% var(--line) no-repeat;
+}
+/* الهامش يبعد الخلايا المضيئة عن خطوط الشبكة.
+   --mark يُحسب من خلية داخل اللوحة (3/13 من اللوحة) لتتطابق مقاسات الرموز بره وجوه اللوحة */
+.cell{
+  --mark:calc((100cqw*3/13 - 16px)*.66);
+  position:relative;z-index:1;display:grid;place-items:center;min-width:0;min-height:0;margin:8px;
+  border:1px solid transparent;border-radius:14px;
+}
+.cell svg{width:var(--mark);height:var(--mark);stroke-width:11}
+.cell.out{margin:3px;border-radius:12px}
+.cell.target{border-color:var(--ink)}
+.cell.grab{background:var(--surface-2);cursor:grab;touch-action:none}
+.cell.dragging{z-index:2;border-color:var(--ink);cursor:grabbing}
+.cell svg{overflow:visible}
+.cell .power{fill:currentColor;stroke:none;font:36px/1 system-ui,sans-serif}
+.cell.both svg{width:calc(var(--mark)*1.42);height:calc(var(--mark)*1.42)}
+.cell .shared{stroke-width:15}
+/* شفافية خفيفة تخلي الرموز تحت الخط مقروءة */
+.strike{position:absolute;inset:0;z-index:2;width:100%;height:100%;overflow:visible;pointer-events:none;stroke:var(--danger);stroke-width:4;opacity:.7}
+
+/* ---- النوافذ المنبثقة ---- */
+dialog{
+  width:min(380px,calc(100vw - 32px));padding:22px;
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow);
+}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h2{margin:0 0 10px;font-size:20.5px;font-weight:400;line-height:1.2}
+dialog p{margin:0 0 12px;font-size:14.5px;line-height:1.8;color:var(--muted)}
+dialog .btn{width:100%;background:var(--surface)}
+dialog .btn.primary{background:var(--ink)}
+#help .btn{margin-top:18px}
+#menu{display:none}
+#menu[open]{display:grid;gap:10px}
+.link{justify-self:center;padding:6px 10px 0;color:var(--muted);font-size:12.5px;text-decoration:underline}
+
+/* ---- لوبي الأونلاين ---- */
+.room-form{display:flex;flex-direction:column;gap:12px}
+.room-code-input{
+  width:100%;min-height:52px;border-radius:16px;text-align:center;letter-spacing:4px;
+  font-size:20px;background:var(--surface);color:var(--ink);border:1px solid var(--border);
+  font-family:var(--font-primary);
+}
+.room-code-display{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:28px;letter-spacing:6px;padding:14px;border-radius:18px;
+  background:var(--surface);border:1px solid var(--border);
+}
+.error-text{color:var(--danger);font-size:13.5px;margin:0}
+
+@media(max-height:620px){
+  main,.screen{gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px calc(10px + env(safe-area-inset-bottom))}
+  .side{gap:8px}
+  .tool{width:48px;height:48px;border-radius:12px}
+  .tool svg{width:36px;height:36px}
+  .face svg{width:64px;height:56px}
+  #board{width:min(100%,450px,46vh);width:min(100%,450px,46dvh)}
+  .cell{margin:5px;border-radius:12px}
+  .cell.out{margin:2px;border-radius:10px}
+}
+
+@media(prefers-reduced-motion:no-preference){
+  .btn,.cell,.tool{transition:background .15s,border-color .15s,opacity .15s}
+  .cell.grab{transition:transform .15s}
+  .cell.dragging{transition:none}
+  .cell.pop svg,.reveal,.strike{animation:pop .2s ease-out}
+  @keyframes pop{from{transform:scale(.6);opacity:0}}
+}

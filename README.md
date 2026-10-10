@@ -1,9 +1,46 @@
-# XO?
+# XO؟
 
-The game is contained in [index.html](index.html). Open that file in a browser to play offline; no installation or account is required.
+لعبة XO عادية ظاهريًا... إلا أن الغش فيها مسموح. مبنية بـ[Nuxt](https://nuxt.com) (Vue 3 + Nitro)، وتدعم ثلاث طرق لعب:
 
-Place the phone between two players for local play, or play against the computer. The opening lets each side choose a cell; if both choose the same one, X and O share it. After the opening, each player can use each cheat once per round: square a mark to protect it, draw beyond a corner, erase an opponent mark, or swap two columns. A cheat takes a turn.
+- **ضد الجهاز** — تبدأ عادية، وفي مكان ما بالجولة يغش الجهاز بدون تحذير، وبعدها تظهر أدوات الغش للطرفين.
+- **لاعبين على نفس الجهاز** — وجهًا لوجه، كل واحد يغش متى قدر.
+- **أونلاين مع صديق** — عبر WebSocket، كل غرفة تتحمّل لاعبين فقط (كود قصير للإنشاء/الانضمام).
 
-The computer game starts as ordinary XO and reveals cheating during play. Use the menu to switch between computer and local play, restart a round, or read the rules. The computer mode also has a light/dark theme button.
+قواعد الغش والفوز موثّقة بالتفصيل في [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md).
 
-To publish this static file with GitHub Pages, select **Settings → Pages → Deploy from a branch → main → / (root)**. Opening `index.html` directly also works.
+## التشغيل محليًا
+
+```bash
+npm install
+npm run dev
+```
+
+ثم افتح `http://localhost:3000`.
+
+## البناء والفحص
+
+```bash
+npm run build       # بناء نسخة الإنتاج في .output
+npm run preview      # تشغيل نسخة الإنتاج محليًا للتأكد منها
+npm run typecheck    # فحص TypeScript عبر vue-tsc
+```
+
+## النشر — يحتاج خادم Node دائم
+
+على عكس النسخة القديمة (ملف HTML ثابت)، اللعب الأونلاين يحتاج **عملية Node تعمل باستمرار** (وليس استضافة ثابتة مثل GitHub Pages)، لأن حالة الغرف تُخزَّن في الذاكرة ويجب أن يبقى اتصال WebSocket مفتوحًا بين الطرفين. بعد `npm run build`، شغّل:
+
+```bash
+node .output/server/index.mjs
+```
+
+أي مزوّد يدعم عملية Node طويلة الأمد مع WebSocket يصلح (مثل Render أو Fly.io أو VPS خاص). لم تُربط البنية بأي مزوّد معيّن عمدًا — فقط تأكد أن:
+- المنفذ (`PORT`) قابل للتهيئة من بيئة الاستضافة (نيترو يقرأه تلقائيًا من `process.env.PORT`).
+- اتصالات WebSocket (ليس HTTP فقط) مسموحة ولا تُقطع من أي بروكسي أمامي.
+
+## الخطوط
+
+الخط الحالي هو **IBM Plex Sans Arabic** (محمّل ذاتيًا عبر `@nuxt/fonts`، بدون أي طلب خارجي وقت التشغيل). عند توفر ملفات خط **Thmanyah**، التبديل سطر واحد فقط — التفاصيل في [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md#الخطوط).
+
+## الاعتمادات
+
+برمجة: مرتجى الباستي، مهند الغريقي. (ظاهرة أيضًا داخل اللعبة من القائمة الرئيسية → الاعتمادات)
